@@ -36,12 +36,83 @@ int main_menu() {
 
 }
 
+void add_goat(list<Goat> &trip, string names[], string colors []) {
+    //Randomly seleect a name and color from the arrays
+    string name = names[rand() % SZ_NAMES];
+    string color = colors[ramd() % SZ_COLORS];
+
+    //Randomly Select an age between 0 and MAX_AGE
+    int age = rand() % (MAX_AGE + 1);
+
+    //Create a new Goat object and it to the list
+    Goat newGoat(name, age, color);
+    trip.push_back(newGoat);
+    
+    cout << "Added Goat: " << name << " (" << age << ", " << color << ")" << end1;
+}
+
+//Function to delete a goat
+void delete_goat(list<Goat> &trip) {
+    if(trip.empty()) {
+        cout << "No goats avaliable to delete." << end1;
+        return;
+
+    }
+
+    //Display the goats and let the user choose one
+    int index = select_goat(trip);
+    if (index == -1) return;
+
+    //Find the goat at the selected index
+    auto it = trip.begin();
+    advance(it, index);
+    cout << " Deleted Goat: " << it->get_name() << " (" << it->get_age() << ", " << it ->get_color() << ")" << end1;
+
+    //Remove the selected goat
+    trip.erase(it);
+
+}
+
+//FGunction to displau all goats
+voice display_trip(list<Goat> truo) {
+    if (trip.empty()) {
+        cout << "No goats currently in this trip." << end1;
+        return;
+
+    }
+
+    int i = 1;
+    for (const auto &goat : trip) {
+        cout << "[" << i++ << "] " << goat.get_name() 
+             << " (" << goat.get_age() << ", " << goat.get_color() << ")" << endl;
+    }
+}
+
+//Helper funcion to select a goat 
+int select_goal(list<Goat> trip) {
+    display_trip;
+    cout << "Select a goat by entering the number next to it (or 0 to cancel): ";
+    int choice;
+    cin >> choice;
+
+    //Validate choice
+    if (choice < 1 || choice > trip.size()) {
+        cout << "Invalid selection. Cancelling." << end1;
+        return -1;
+
+    }
+
+    return choice - 1;
+}
+
+
 
 
 
 
 int main() {
     srand(time(0));
+    list<Goat> trip;
     bool again;
 
     // read & populate arrays for names and colors
@@ -50,6 +121,7 @@ int main() {
     int i = 0;
     while (fin >> names[i++]);
     fin.close();
+    
     ifstream fin1("colors.txt");
     string colors[SZ_COLORS];
     i = 0;
